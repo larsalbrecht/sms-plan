@@ -1,0 +1,28 @@
+<resources>
+    <string name="title_activity_intro">TerrorSMS</string>
+    <string name="app_name">TerrorSMS</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_create">Erstelle</string>
+    <string name="create_event_header">Event Daten eingeben</string>
+    <string name="create_event_phonenumber">Telefonnummer</string>
+    <string name="create_event_data">Datum</string>
+    <string name="create_event_time">Uhrzeit</string>
+    <string name="create_event_cancel">Abbrechen</string>
+    <string name="create_event_cancel_header">Abbrechen</string>
+    <string name="create_event_save_header">Speichern</string>
+    <string name="select_contacts_cancel_header">Abbrechen</string>
+    <string name="select_contacts_save_header">Speichern</string>
+    <string name="run_setalarm_title">run `setAlarm\';</string>
+    <string name="create_event_message_title">Nachricht</string>
+    <string name="create_event_date_title">Datum wählen</string>
+    <string name="create_event_select_time_title">Uhrzeit wählen</string>
+    <string name="create_event_select_event_type_title">Eventart auswählen</string>
+    <string name="choose_contacts">Wähle Kontakte</string>
+    <string name="title_activity_select_contacts">Kontakte auswählen</string>
+    <string name="generate_message">Nachricht generieren</string>
+    <string name="open_create_activity">Erstelle neue SMS</string>
+    <string name="intro_message_description">Diese App wurde beim VHackAndroid Bremen 2012 erstellt und hat den dritten Platz bekommen.</string>
+    <string name="intro_message_manual">Anleitung:\nKlicke auf den Button um eine neue Zeitgesteuerte SMS zu erstellen. Wähle ein Event und lasse Dir Texte generieren (Nicht bei allen Eventtypen möglich).</string>
+    
+
+</resources>
