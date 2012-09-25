@@ -17,6 +17,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentBottom="true"
 		    android:layout_alignParentRight="true"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
 		    android:text="@string/select_contacts_save_header" />
 
 		<Button
@@ -25,6 +27,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentBottom="true"
 		    android:layout_alignParentLeft="true"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginRight="10dp"
 		    android:text="@string/select_contacts_save_header" />
 
 </RelativeLayout>
