@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
 
 import android.util.Log;
 import android.util.SparseArray;
@@ -106,8 +105,8 @@ public class SoupMessages {
 	 */
 	private static ArrayList<String> getSingleMessageList(final MessageSource mSource) throws IOException{
 		final ArrayList<String> tempList = new ArrayList<String>();
-		final Document doc = (Document) Jsoup.connect(mSource.getUrl()).get();
-		final Elements dummyParagraphs = ((Elements) doc).select("p em");
+		final org.jsoup.nodes.Document doc = Jsoup.connect(mSource.getUrl()).get();
+		final Elements dummyParagraphs = doc.select("p em");
 		final String content = dummyParagraphs.get(mSource.getRow()).text();
 		final String msgs[] = content.split(mSource.getSplit());
 		for (final String string : msgs) {

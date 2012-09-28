@@ -1,5 +1,6 @@
 package com.lars_albrecht.android.smsplan.activities;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,7 +30,9 @@ import com.lars_albrecht.android.smsplan.R;
 import com.lars_albrecht.android.smsplan.database.EventsDataSource;
 import com.lars_albrecht.android.smsplan.helper.SoupMessages;
 import com.lars_albrecht.android.smsplan.helper.Utilities;
+import com.lars_albrecht.android.smsplan.model.ContactInfo;
 import com.lars_albrecht.android.smsplan.model.ScheduledEvent;
+import com.lars_albrecht.android.smsplan.model.parceable.ParceableContactInfo;
 
 @SuppressLint({ "NewApi", "NewApi" })
 public class CreateEventActivity extends Activity implements OnClickListener {
@@ -49,6 +52,7 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	private Button generateMessage = null;
 	private Button cancelButton = null;
 	private Button save = null;
+	private ArrayList<ContactInfo> selectedContactInfos = null;
 
 	private int minute;
 	private int hourOfDay;
@@ -75,6 +79,8 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 		this.setCurrentDate();
 		this.save = (Button) this.findViewById(R.id.btnCreateEventSave);
 		this.save.setOnClickListener(this);
+
+		this.selectedContactInfos = new ArrayList<ContactInfo>();
 
 		final OnDateSetListener onDateSetListener = new OnDateSetListener() {
 
@@ -142,13 +148,29 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 				.append(CreateEventActivity.pad(this.minute)));
 	}
 
+	/**
+	 * Will be called when an activity has results. In this case, the activity
+	 * "SelectContactsActivity" will return a result, to parse the selected
+	 * contacts.
+	 */
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(CreateEventActivity.TAG, Integer.toString(requestCode));
-		Log.d(CreateEventActivity.TAG, Integer.toString(resultCode));
-		Log.d(CreateEventActivity.TAG, data.getDataString());
-		if (resultCode == Activity.RESULT_OK) {
+		// if the contacts exists
+		if (data.getExtras().containsKey("contacts")) {
+			@SuppressWarnings("unchecked")
+			// load parcels (contacts) from data intent.
+			final ArrayList<ParceableContactInfo> parceableSelectedContacts = (ArrayList<ParceableContactInfo>) data.getExtras().get(
+					"contacts");
+			final ArrayList<ContactInfo> selectedContacts = new ArrayList<ContactInfo>();
+			// transform parceableContactInfos into contactInfos
+			for (final ParceableContactInfo parceableContactInfo : parceableSelectedContacts) {
+				selectedContacts.add(parceableContactInfo.getContactInfo());
+			}
+			// return contacts to save them later
+			this.selectedContactInfos = selectedContacts;
+		} else {
+			Log.d(CreateEventActivity.TAG, "CONTACTS CONTAINS FAILED!");
 		}
 	}
 
@@ -222,9 +244,14 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	 */
 	private void save(){
 		final EventsDataSource model = new EventsDataSource(this.getApplicationContext());
-		final ScheduledEvent enteredEvent = this.getEnteredEvent();
-		model.createEvent(enteredEvent);
-		Log.d(CreateEventActivity.TAG, "Entered Date " + enteredEvent.getDate().getTime());
+		final ArrayList<ScheduledEvent> enteredEvents = this.getEnteredEvent();
+		// save all entered events
+		for (final ScheduledEvent scheduledEvent : enteredEvents) {
+			model.createEvent(scheduledEvent);
+			Log.d(CreateEventActivity.TAG, "Entered Date " + scheduledEvent.getDate().getTime());
+		}
+
+		// set next event
 		final ScheduledEvent nextEvent = model.getNextEvent();
 		Utilities.setAlarm(this.getApplicationContext(), nextEvent);
 		model.close();
@@ -234,19 +261,44 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	 * 
 	 * @return
 	 */
-	private ScheduledEvent getEnteredEvent(){
+	private ArrayList<ScheduledEvent> getEnteredEvent(){
+		final ArrayList<ScheduledEvent> resultList = new ArrayList<ScheduledEvent>();
+
 		final EditText txtMessage = (EditText) this.findViewById(R.id.messageInput);
-		final EditText txtPhoneNumber = (EditText) this.findViewById(R.id.txtCreateEventPhonenumber);
-		final ScheduledEvent scheduledEvent = new ScheduledEvent();
+		String phoneNumber = null;
+		String message = null;
+
+		if (CreateEventActivity.EVENT_TYPE >= -1) {
+			// create event for each selected contact
+			for (final ContactInfo contactInfo : this.selectedContactInfos) {
+				phoneNumber = contactInfo.getNumber();
+				message = txtMessage.getText().toString();
+				resultList.add(this.scheduleEvent(message, phoneNumber));
+			}
+		} else {
+			// for later use
+			// use input box for phone numbers
+			// final EditText txtPhoneNumber = (EditText)
+			// this.findViewById(R.id.txtCreateEventPhonenumber);
+		}
+
+		return resultList;
+	}
+
+	private ScheduledEvent scheduleEvent(final String message, final String phoneNumber){
+
+		final ScheduledEvent resultEvent = new ScheduledEvent();
 		final Calendar cal = Calendar.getInstance();
 		cal.set(this.year, this.month, this.dayOfMonth, this.hourOfDay, this.minute);
 		final Date createDate = cal.getTime();
 
-		scheduledEvent.setDate(createDate);
-		scheduledEvent.setMessage(txtMessage.getText().toString());
-		scheduledEvent.setPhoneNumber(txtPhoneNumber.getText().toString());
-		scheduledEvent.setSent(0);
-		return scheduledEvent;
+		resultEvent.setDate(createDate);
+		resultEvent.setMessage(message);
+		resultEvent.setPhoneNumber(phoneNumber);
+		resultEvent.setSent(0);
+
+		return resultEvent;
+
 	}
 
 	private static String pad(final int c){

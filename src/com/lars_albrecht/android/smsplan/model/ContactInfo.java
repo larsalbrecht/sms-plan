@@ -1,9 +1,8 @@
 package com.lars_albrecht.android.smsplan.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-public class ContactInfo implements Parcelable {
+public class ContactInfo {
 
 	private String name;
 	private String birthday;
@@ -54,30 +53,5 @@ public class ContactInfo implements Parcelable {
 	public void setSelected(final boolean selected){
 		this.selected = selected;
 	}
-
-	@Override
-	public int describeContents(){
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(final Parcel dest, final int flags){
-		dest.writeString(this.getName());
-		dest.writeString(this.getBirthday());
-		dest.writeString(this.getNumber());
-	}
-
-	public static final Parcelable.Creator<ContactInfo> CREATOR = new Parcelable.Creator<ContactInfo>() {
-
-		@Override
-		public ContactInfo createFromParcel(final Parcel in){
-			return new ContactInfo(in);
-		}
-
-		@Override
-		public ContactInfo[] newArray(final int size){
-			return new ContactInfo[size];
-		}
-	};
 
 }
