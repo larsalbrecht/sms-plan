@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.lars_albrecht.android.smsplan.R;
 import com.lars_albrecht.android.smsplan.helper.InteractiveArrayAdapter;
 import com.lars_albrecht.android.smsplan.model.ContactInfo;
+import com.lars_albrecht.android.smsplan.model.parceable.ParceableContactInfo;
 
 public class SelectContactsActivity extends Activity {
 
@@ -47,18 +48,18 @@ public class SelectContactsActivity extends Activity {
 
 			@Override
 			public void onClick(final View v){
-				final ArrayList<ContactInfo> selectedContacs = new ArrayList<ContactInfo>();
+				final ArrayList<ParceableContactInfo> selectedContacs = new ArrayList<ParceableContactInfo>();
 				for (final ContactInfo info : contacts) {
 					if (info.isSelected()) {
-						selectedContacs.add(info);
+						selectedContacs.add(new ParceableContactInfo(info));
 					}
 				}
-				final Bundle resultBundle = new Bundle();
-				resultBundle.putParcelableArrayList("contacts", selectedContacs);
-				final Intent contacts = new Intent();
-				contacts.putExtras(resultBundle);
-				SelectContactsActivity.this.setResult(Activity.RESULT_OK, contacts);
+
+				final Intent i = new Intent(SelectContactsActivity.this.getApplicationContext(), CreateEventActivity.class);
+				i.putExtra("contacts", selectedContacs);
+				SelectContactsActivity.this.setResult(Activity.RESULT_OK, i);
 				Toast.makeText(SelectContactsActivity.this, "Kontaktdaten übernommen", Toast.LENGTH_LONG).show();
+				SelectContactsActivity.this.finishActivity(Activity.RESULT_OK);
 				SelectContactsActivity.this.finish();
 			}
 		});
