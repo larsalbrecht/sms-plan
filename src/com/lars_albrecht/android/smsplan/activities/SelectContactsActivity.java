@@ -76,6 +76,7 @@ public class SelectContactsActivity extends Activity {
 	}
 
 	// method to get name, contact id, and birthday
+	@SuppressWarnings("deprecation")
 	private Cursor getContactsBirthdays(){
 		final Uri uri = ContactsContract.Data.CONTENT_URI;
 		final String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
@@ -85,6 +86,7 @@ public class SelectContactsActivity extends Activity {
 		final String[] selectionArgs = new String[] { ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE };
 		final String sortOrder = null;
 		return this.managedQuery(uri, projection, where, selectionArgs, sortOrder);
+
 	}
 
 	public List<ContactInfo> getContacts(){
