@@ -51,4 +51,9 @@ public class ScheduledEvent {
 		this.message = message;
 	}
 
+	@Override
+	public String toString(){
+		return this.getDate() + " - " + this.getPhoneNumber();
+	}
+
 }

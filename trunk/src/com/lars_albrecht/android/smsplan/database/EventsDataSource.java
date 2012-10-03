@@ -1,5 +1,6 @@
 package com.lars_albrecht.android.smsplan.database;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -43,6 +44,16 @@ public class EventsDataSource {
 						+ MySQLiteHelper.COLUMN_SENT + " = 0" + " ORDER BY date LIMIT 1", null);
 		Log.d(EventsDataSource.TAG, "Suche Zeit " + System.currentTimeMillis());
 		return this.cursorToScheduledEvent(cursor);
+	}
+
+	public ArrayList<ScheduledEvent> getAllMarkedEvents(){
+		final Cursor cursor = this.database.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_EVENTS + " WHERE "
+				+ MySQLiteHelper.COLUMN_SENT + " = 1 " + " ORDER BY date LIMIT 1", null);
+		while (cursor.moveToNext()) {
+			this.cursorToScheduledEvent(cursor);
+		}
+
+		return null;
 	}
 
 	public ScheduledEvent getNextSendeableEvent(){
@@ -110,14 +121,15 @@ public class EventsDataSource {
 	 */
 	private ScheduledEvent cursorToScheduledEvent(final Cursor cursor){
 		ScheduledEvent event = null;
-		if (cursor.moveToFirst()) {
-			event = new ScheduledEvent();
-			event.setId(cursor.getInt(0));
-			event.setDate(new Date(cursor.getLong(1)));
-			event.setPhoneNumber(cursor.getString(2));
-			event.setMessage(cursor.getString(3));
-			event.setSent(cursor.getInt(4));
+		if (cursor.getPosition() <= -1 || cursor.isNull(cursor.getPosition())) {
+			cursor.moveToNext();
 		}
+		event = new ScheduledEvent();
+		event.setId(cursor.getInt(0));
+		event.setDate(new Date(cursor.getLong(1)));
+		event.setPhoneNumber(cursor.getString(2));
+		event.setMessage(cursor.getString(3));
+		event.setSent(cursor.getInt(4));
 		return event;
 	}
 }

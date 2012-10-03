@@ -15,7 +15,7 @@ public class AlarmEvent extends BroadcastReceiver {
 	private final static String TAG = "AlarmEvent";
 
 	/**
-	 * Will be called at alarm.
+	 * Will be called when alarm is called.
 	 * 
 	 * @param Context
 	 *            context
@@ -24,33 +24,40 @@ public class AlarmEvent extends BroadcastReceiver {
 	 */
 	@Override
 	public void onReceive(final Context context, final Intent intent){
-		// TODO send sms
-		// SmsManager sms = SmsManager.getDefault();
-		// sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Log.d(AlarmEvent.TAG, "onReceive - send sms");
 
-		// check for next event
-		EventsDataSource model = new EventsDataSource(context);
-		final ScheduledEvent targetEvent = model.getNextSendeableEvent();
+		// check for event
+		EventsDataSource dataSource = new EventsDataSource(context);
+		final ScheduledEvent targetEvent = dataSource.getNextSendeableEvent();
 		if (targetEvent != null) {
-			model.markEvent(targetEvent);
-			final SmsManager sms = SmsManager.getDefault();
-			sms.sendTextMessage(targetEvent.getPhoneNumber(), null, targetEvent.getMessage(), null, null);
-
+			// this.sendSMS(targetEvent.getPhoneNumber(),
+			// targetEvent.getMessage());
+			dataSource.markEvent(targetEvent);
 		} else {
 			Log.d(AlarmEvent.TAG, "no targetEvent found.");
 		}
-		model.close();
+		dataSource.close();
 
-		model = new EventsDataSource(context);
-		final ScheduledEvent nextEvent = model.getNextEvent();
+		dataSource = new EventsDataSource(context);
+		final ScheduledEvent nextEvent = dataSource.getNextEvent();
 		// set new alarm for next event
 		if (nextEvent != null) {
 			Log.d(AlarmEvent.TAG, "message for next Event: " + nextEvent.getMessage());
 			Utilities.setAlarm(context, nextEvent);
 		}
-		model.close();
+		dataSource.close();
+	}
 
+	/**
+	 * Send a SMS with the "message" to "number".
+	 * 
+	 * @param number
+	 *            String
+	 * @param message
+	 *            String
+	 */
+	private void sendSMS(final String number, final String message){
+		SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
 	}
 
 }

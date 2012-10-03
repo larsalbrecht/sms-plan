@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="20dp"
         android:text="@string/intro_message_description" />
 
 	<TextView
@@ -20,11 +20,12 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
 	    android:layout_below="@+id/tvIntroMessageDescription"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
+	    android:layout_centerHorizontal="true"
 	    android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
 	    android:text="@string/intro_message_manual" />
-    
+
     <Button
         android:id="@+id/btnOpenCreateActivity"
         android:layout_width="wrap_content"
@@ -32,5 +33,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/open_create_activity" />
+
+    <Button
+        android:id="@+id/btnOpenHistoryActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnOpenCreateActivity"
+        android:layout_below="@+id/btnOpenCreateActivity"
+        android:layout_marginTop="20dp"
+        android:text="@string/open_history_activity" />
 
 </RelativeLayout>

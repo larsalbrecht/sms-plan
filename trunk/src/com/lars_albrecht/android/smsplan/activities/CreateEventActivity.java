@@ -216,22 +216,18 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 		if (item.getTitle() == "Eigenes Event") {
 			((Button) this.findViewById(R.id.buttonCreateEventTime)).setVisibility(View.VISIBLE);
 			((Button) this.findViewById(R.id.buttonOpenDatePicker)).setVisibility(View.VISIBLE);
-			((TextView) this.findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
-			((TextView) this.findViewById(R.id.textView4)).setVisibility(View.VISIBLE);
-			((Button) this.findViewById(R.id.btnChooseContacts)).setVisibility(View.INVISIBLE);
+			((TextView) this.findViewById(R.id.txtDate)).setVisibility(View.VISIBLE);
+			// ((Button)
+			// this.findViewById(R.id.btnChooseContacts)).setVisibility(View.INVISIBLE);
 			((Button) this.findViewById(R.id.btnGenerateMessage)).setVisibility(View.INVISIBLE);
 			CreateEventActivity.EVENT_TYPE = CreateEventActivity.TYPE_OWN;
 		} else if (item.getTitle() == "Weihnachten" || item.getTitle() == "Sylvester" || item.getTitle() == "Geburtstag") {
 			((Button) this.findViewById(R.id.btnGenerateMessage)).setVisibility(View.VISIBLE);
 			((Button) this.findViewById(R.id.buttonCreateEventTime)).setVisibility(View.INVISIBLE);
 			((Button) this.findViewById(R.id.buttonOpenDatePicker)).setVisibility(View.INVISIBLE);
-			((TextView) this.findViewById(R.id.textView2)).setVisibility(View.INVISIBLE);
-			((TextView) this.findViewById(R.id.textView3)).setVisibility(View.INVISIBLE);
-			((TextView) this.findViewById(R.id.textView4)).setVisibility(View.INVISIBLE);
 			((Button) this.findViewById(R.id.btnChooseContacts)).setVisibility(View.VISIBLE);
 			CreateEventActivity.EVENT_TYPE = item.getTitle() == "Weihnachten" ? CreateEventActivity.TYPE_CHRISTMAS
 					: item.getTitle() == "Sylvester" ? CreateEventActivity.TYPE_NEWYEAREVE : CreateEventActivity.TYPE_BIRTHDAY;
-			((EditText) this.findViewById(R.id.txtCreateEventPhonenumber)).setVisibility(View.INVISIBLE);
 		} else {
 			Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show();
 			return false;
@@ -248,7 +244,6 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 		// save all entered events
 		for (final ScheduledEvent scheduledEvent : enteredEvents) {
 			model.createEvent(scheduledEvent);
-			Log.d(CreateEventActivity.TAG, "Entered Date " + scheduledEvent.getDate().getTime());
 		}
 
 		// set next event
@@ -286,7 +281,6 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	}
 
 	private ScheduledEvent scheduleEvent(final String message, final String phoneNumber){
-
 		final ScheduledEvent resultEvent = new ScheduledEvent();
 		final Calendar cal = Calendar.getInstance();
 		cal.set(this.year, this.month, this.dayOfMonth, this.hourOfDay, this.minute);
@@ -329,6 +323,22 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 		this.hourOfDay = hourOfDay;
 	}
 
+	private boolean isDateValid(){
+		if (CreateEventActivity.EVENT_TYPE == CreateEventActivity.TYPE_OWN
+				&& (this.year > Calendar.getInstance().get(Calendar.YEAR) || this.year == Calendar.getInstance().get(Calendar.YEAR)
+						&& (this.month > Calendar.getInstance().get(Calendar.MONTH) || this.month == Calendar.getInstance().get(
+								Calendar.MONTH)
+								&& (this.dayOfMonth > Calendar.getInstance().get(Calendar.DAY_OF_MONTH) || this.dayOfMonth == Calendar
+										.getInstance().get(Calendar.DAY_OF_MONTH)
+										&& (this.hourOfDay > Calendar.getInstance().get(Calendar.HOUR_OF_DAY) || this.hourOfDay == Calendar
+												.getInstance().get(Calendar.HOUR_OF_DAY)
+												&& this.minute > Calendar.getInstance().get(Calendar.MINUTE)))))
+
+		) { return true; }
+
+		return false;
+	}
+
 	@Override
 	public void onClick(final View v){
 		if (v == this.chooseContactsButton) {
@@ -344,7 +354,15 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 		} else if (v == this.cancelButton) {
 			this.finish();
 		} else if (v == this.save) {
-			this.save();
+			if (CreateEventActivity.EVENT_TYPE == CreateEventActivity.TYPE_OWN && this.isDateValid()
+					|| CreateEventActivity.EVENT_TYPE > CreateEventActivity.TYPE_OWN) {
+				this.save();
+				this.finish();
+			} else {
+				// TODO translate this
+				Toast.makeText(this, "Das Datum liegt in der Vergangenheit", Toast.LENGTH_LONG).show();
+			}
+
 		}
 	}
 }
