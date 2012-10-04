@@ -1,0 +1,8 @@
+#summary Todos for the project
+#labels Phase-QA,Phase-Implementation
+
+= Testing =
+  * ...
+
+= Bugfixing =
+  * ...
