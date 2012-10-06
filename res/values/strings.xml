@@ -6,6 +6,7 @@
     <string name="title_activity_create">Erstelle eine neue SMS</string>
     <string name="title_activity_select_contacts">Kontakte auswählen</string>
     <string name="title_activity_history">Vergangene SMSe</string>
+    <string name="title_activity_upcoming">Zukünftige SMSe</string>
     
     <string name="create_event_header">Event Daten eingeben</string>
     <string name="create_event_phonenumber">Telefonnummer</string>
@@ -27,6 +28,7 @@
     
     <string name="open_create_activity">Erstelle neue SMS</string>
     <string name="open_history_activity">Vergangene SMSe</string>
+    <string name="open_upcoming_activity">Zukünftige SMSe</string>
     
     <string name="intro_message_description">Diese App wurde beim VHackAndroid Bremen 2012 erstellt und hat den dritten Platz bekommen.</string>
     <string name="intro_message_manual">Anleitung:\nKlicke auf den Button um eine neue Zeitgesteuerte SMS zu erstellen. Wähle ein Event und lasse Dir Texte generieren (Nicht bei allen Eventtypen möglich).</string>

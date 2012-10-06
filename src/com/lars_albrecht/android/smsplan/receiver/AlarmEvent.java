@@ -30,8 +30,7 @@ public class AlarmEvent extends BroadcastReceiver {
 		EventsDataSource dataSource = new EventsDataSource(context);
 		final ScheduledEvent targetEvent = dataSource.getNextSendeableEvent();
 		if (targetEvent != null) {
-			// this.sendSMS(targetEvent.getPhoneNumber(),
-			// targetEvent.getMessage());
+			this.sendSMS(targetEvent.getPhoneNumber(), targetEvent.getMessage());
 			dataSource.markEvent(targetEvent);
 		} else {
 			Log.d(AlarmEvent.TAG, "no targetEvent found.");
@@ -57,6 +56,7 @@ public class AlarmEvent extends BroadcastReceiver {
 	 *            String
 	 */
 	private void sendSMS(final String number, final String message){
+		Log.d(AlarmEvent.TAG, "Send: \"" + message + "\" to " + "\"" + number + "\"");
 		SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
 	}
 

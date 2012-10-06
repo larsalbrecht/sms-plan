@@ -155,6 +155,7 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	 */
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data){
+		if (resultCode == Activity.RESULT_CANCELED) { return; }
 		super.onActivityResult(requestCode, resultCode, data);
 		// if the contacts exists
 		if (data.getExtras().containsKey("contacts")) {
@@ -239,17 +240,16 @@ public class CreateEventActivity extends Activity implements OnClickListener {
 	 * 
 	 */
 	private void save(){
-		final EventsDataSource model = new EventsDataSource(this.getApplicationContext());
+		final EventsDataSource dataSource = EventsDataSource.getInstance(this.getApplicationContext());
 		final ArrayList<ScheduledEvent> enteredEvents = this.getEnteredEvent();
 		// save all entered events
 		for (final ScheduledEvent scheduledEvent : enteredEvents) {
-			model.createEvent(scheduledEvent);
+			dataSource.createEvent(scheduledEvent);
 		}
 
 		// set next event
-		final ScheduledEvent nextEvent = model.getNextEvent();
+		final ScheduledEvent nextEvent = dataSource.getNextEvent();
 		Utilities.setAlarm(this.getApplicationContext(), nextEvent);
-		model.close();
 	}
 
 	/**
