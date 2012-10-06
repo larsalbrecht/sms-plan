@@ -4,7 +4,30 @@ import java.util.Date;
 
 public class ScheduledEvent {
 
-	int id;
+	private int id;
+	private Date date;
+	private String phoneNumber;
+	private String message;
+	private int sent;
+
+	public ScheduledEvent() {
+	}
+
+	/**
+	 * @param id
+	 * @param date
+	 * @param phoneNumber
+	 * @param message
+	 * @param sent
+	 */
+	public ScheduledEvent(final int id, final Date date, final String phoneNumber, final String message, final int sent) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.phoneNumber = phoneNumber;
+		this.message = message;
+		this.sent = sent;
+	}
 
 	public int getId(){
 		return this.id;
@@ -13,11 +36,6 @@ public class ScheduledEvent {
 	public void setId(final int id){
 		this.id = id;
 	}
-
-	Date date;
-	String phoneNumber;
-	String message;
-	int sent;
 
 	public int getSent(){
 		return this.sent;

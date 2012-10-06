@@ -21,11 +21,11 @@ import com.lars_albrecht.android.smsplan.exceptions.InvalidTypeException;
 import com.lars_albrecht.android.smsplan.model.ScheduledEvent;
 
 @SuppressLint("NewApi")
-public class HistoryActivity extends Activity {
+public class UpcomingActivity extends Activity {
 
-	private final static String TAG = "HistoryActivity";
+	private final static String TAG = "UpcomingActivity";
 
-	private ListView lvHistory = null;
+	private ListView lvUpcoming = null;
 	private ArrayList<ScheduledEvent> eventList = null;
 
 	@Override
@@ -33,8 +33,8 @@ public class HistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.eventlist);
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
-		this.lvHistory = (ListView) this.findViewById(R.id.historyList);
-		this.lvHistory.setLongClickable(true);
+		this.lvUpcoming = (ListView) this.findViewById(R.id.historyList);
+		this.lvUpcoming.setLongClickable(true);
 
 		try {
 			this.fillList();
@@ -50,18 +50,18 @@ public class HistoryActivity extends Activity {
 	 * @throws Exception
 	 */
 	private void fillList() throws InvalidTypeException{
-		this.eventList = EventsDataSource.getInstance(this.getApplicationContext()).getAllEvents(EventsDataSource.TYPE_SENT);
+		this.eventList = EventsDataSource.getInstance(this.getApplicationContext()).getAllEvents(EventsDataSource.TYPE_UNSENT);
 		final String[] c_list = new String[this.eventList.size()];
 		for (int i = 0; i < this.eventList.size(); i++) {
 			c_list[i] = this.eventList.get(i).toString();
 		}
 
 		for (final String string : c_list) {
-			Log.d(HistoryActivity.TAG, string);
+			Log.d(UpcomingActivity.TAG, string);
 		}
 
 		final ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, c_list);
-		this.lvHistory.setAdapter(historyAdapter);
+		this.lvUpcoming.setAdapter(historyAdapter);
 
 	}
 

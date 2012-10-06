@@ -42,5 +42,15 @@
         android:layout_below="@+id/btnOpenCreateActivity"
         android:layout_marginTop="20dp"
         android:text="@string/open_history_activity" />
+    
+	<Button
+        android:id="@+id/btnOpenUpcomingActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnOpenCreateActivity"
+        android:layout_below="@+id/btnOpenHistoryActivity"
+        android:layout_marginTop="20dp"
+        android:text="@string/open_upcoming_activity" />
+    
 
 </RelativeLayout>

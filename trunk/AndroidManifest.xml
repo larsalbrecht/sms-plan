@@ -47,6 +47,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.lars_albrecht.android.smsplan.IntroActivity" />
         </activity>
+        <activity
+            android:name=".activities.UpcomingActivity"
+            android:label="@string/title_activity_upcoming" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.lars_albrecht.android.smsplan.IntroActivity" />
+        </activity>
     </application>
 
 </manifest>

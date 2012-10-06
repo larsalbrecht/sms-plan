@@ -40,6 +40,7 @@ public class SelectContactsActivity extends Activity {
 
 			@Override
 			public void onClick(final View v){
+				SelectContactsActivity.this.setResult(Activity.RESULT_CANCELED);
 				SelectContactsActivity.this.finish();
 			}
 		});
